@@ -21,9 +21,6 @@
     <ClCompile Include="dynamic_array.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="linked_list.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="stack.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>

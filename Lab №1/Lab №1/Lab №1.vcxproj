@@ -128,7 +128,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dynamic_array.cpp" />
-    <ClCompile Include="linked_list.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stack.cpp" />
     <ClCompile Include="TApplication.cpp" />

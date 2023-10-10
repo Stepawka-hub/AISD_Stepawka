@@ -5,17 +5,16 @@
 
 class TApplication {
 private:
-	int keychange;
-	LinkedList List;
+	LinkedList<int> List;
 	Stack Stack;
 	DynamicArray Array;
-
-	int MainMenu();
+	int Menu(int status);
 	int LinkedListMenu();
 	int StackMenu();
 	int DynamicArrayMenu();
 
 public:
+
 	TApplication();
 	int Executor();
 	~TApplication();
