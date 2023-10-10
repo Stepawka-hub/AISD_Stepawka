@@ -1,9 +1,10 @@
 ﻿#include <iostream>
-#include "linked_list.h"
-#include "dynamic_array.h"
-#include "stack.h"
+#include "TApplication.h"
 
-int main()
-{
-    std::cout << "Hello World!\n";
+int main() {
+    setlocale(LC_ALL, "");
+    TApplication Application;
+    Application.Executor();
+
+    return 1;
 }
