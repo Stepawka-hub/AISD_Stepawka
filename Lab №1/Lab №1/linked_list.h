@@ -168,23 +168,24 @@ int LinkedList<T>::insert(int index, T data) {
 
 template<typename T>
 int LinkedList<T>::erase(int index) {
+    if (index < 0 || index >= size)
+        return 0;
+
     Node<T>* ptr = getnode(index);
 
-    if (ptr == NULL)
-        return 0;
+    if (ptr->prev == NULL) {
+        return delete_top();
+    }
 
     if (ptr->next == NULL)
         return delete_end();
 
-    if (ptr->prev == NULL)
-        return delete_top();
-
-    Node<T>* left = ptr->prev, * right = ptr->next;
+    Node<T>* left = ptr->prev; Node<T> *right = ptr->next;
     left->next = right;
     right->prev = left;
 
-    --size;
     delete ptr;
+    --size;
 
     return 1;
 }

@@ -15,7 +15,7 @@ int TApplication::Menu(int status) {
 		SetConsoleTextAttribute(hConsole, 14);
 		std::cout << "\n << Меню >>\n";
 		SetConsoleTextAttribute(hConsole, 11);
-		std::cout << "\n <1> - Работа со списком\n <2> - Работа со стеком\n <3> - Работа с динамическим массивом\n";
+		std::cout << "\n <1> - Работа со списком\n <2> - Работа с динамическим массивом\n <3> - Работа со стеком\n";
 		SetConsoleTextAttribute(hConsole, 12);
 		std::cout << " <0> - Выход из программы\n";
 		break;
@@ -30,9 +30,12 @@ int TApplication::Menu(int status) {
 		break;
 
 	case 3:
-		break;
-
-	case 4:
+		SetConsoleTextAttribute(hConsole, 14);
+		std::cout << "\n << Работа с динамическим массивом >>\n";
+		SetConsoleTextAttribute(hConsole, 11);
+		std::cout << "\n <1> - Получить значение элемента\n <2> - Добавить элемент в массив\n <3> - Изменить значение элемента\n <4> - Удалить элемент из массива\n <5> - Вывести размер массива\n";
+		SetConsoleTextAttribute(hConsole, 12);
+		std::cout << " <0> - Вернуться в главное меню\n";
 		break;
 	}
 
@@ -49,10 +52,10 @@ int TApplication::Executor() {
 			LinkedListMenu();
 			break;
 		case '2':
-			StackMenu();
+			DynamicArrayMenu();
 			break;
 		case '3':
-			DynamicArrayMenu();
+			StackMenu();
 			break;
 		default:
 			break;
@@ -79,6 +82,8 @@ int TApplication::LinkedListMenu() {
 			SetConsoleTextAttribute(hConsole, 14);
 			std::cin >> data;
 			List.add_top(data);
+			std::cout << "Узел был добавлен в начало списка с указанными данными.\n";
+			system("pause");
 			break;
 
 		case '2':
@@ -88,6 +93,8 @@ int TApplication::LinkedListMenu() {
 			SetConsoleTextAttribute(hConsole, 14);
 			std::cin >> data;
 			List.add_end(data);
+			std::cout << "Узел был добавлен в конец списка с указанными данными.\n";
+			system("pause");
 			break;
 
 		case '3':
@@ -156,9 +163,9 @@ int TApplication::LinkedListMenu() {
 			List.insert(index, data);
 			SetConsoleTextAttribute(hConsole, 14);
 			if (index + 1 > List.getsize())
-				std::cout << "Неверный индекс. Узел был добавлен в конец списка.\n";
+				std::cout << "Узел был добавлен в конец списка.\n";
 			else if (index < 0)
-				std::cout << "Неверный индекс. Узел был добавлен в начало списка.\n";
+				std::cout << "Узел был добавлен в начало списка.\n";
 			else {
 				SetConsoleTextAttribute(hConsole, 11);
 				std::cout << "Узел был добавлен на позицию ";
@@ -177,23 +184,23 @@ int TApplication::LinkedListMenu() {
 				break;
 			}
 			SetConsoleTextAttribute(hConsole, 11);
-			std::cout << "Укажите позицию (индекс) узла, который нужно удалить: ";
+			std::cout << "Укажите позицию (индекс) узла, который нужно удалить (0 - " << List.getsize()-1 << "): ";
 			SetConsoleTextAttribute(hConsole, 14);
 			std::cin >> index;
-			List.erase(index);
 			SetConsoleTextAttribute(hConsole, 14);
-			if (index + 1 > List.getsize())
-				std::cout << "Неверный индекс. Был удалён узел с конца списка.\n";
-			else if (index < 0)
-				std::cout << "Неверный индекс. Был удалён узел с начала списка.\n";
+			if (index < 0 || index >= List.getsize()) {
+				SetConsoleTextAttribute(hConsole, 12);
+				std::cout << "Указан неверный индекс!\n";
+			}
 			else {
 				SetConsoleTextAttribute(hConsole, 11);
 				std::cout << "Узел на позиции ";
 				SetConsoleTextAttribute(hConsole, 14);
-				std::cout << "'" << index << "'" << "\n";
+				std::cout << "'" << index << "'";
 				SetConsoleTextAttribute(hConsole, 11);
-				std::cout << " был удалён!";
+				std::cout << " был удалён!\n";
 			}
+			List.erase(index);
 			system("pause");
 			break;
 
@@ -244,15 +251,9 @@ int TApplication::StackMenu() {
 }
 
 int TApplication::DynamicArrayMenu() {
-	system("cls");
-	SetConsoleTextAttribute(hConsole, 14);
-	std::cout << "\n << Работа с динамическим >>\n";
-	SetConsoleTextAttribute(hConsole, 11);
-	std::cout << "\n <1> - Добавить узел в начало списка\n <2> - Добавить узел в конец списка\n <3> - Удалить узел сначала списка\n <4> - Удалить узел с конца списка\n";
-	SetConsoleTextAttribute(hConsole, 12);
-	std::cout << " <0> - Вернуться в главное меню\n";
-	
-	bool x = true;
+	Menu(3);
+	bool x = true; short index = 0;
+	int data = 0;
 	while (x) {
 		switch (_getch()) {
 		case '0':
@@ -260,21 +261,35 @@ int TApplication::DynamicArrayMenu() {
 			break;
 
 		case '1':
+			system("cls");
+			Array.get(index);
 			break;
 
 		case '2':
+			system("cls");
+			Array.add(index, data);
 			break;
 
 		case '3':
+			system("cls");
+			Array.set(index, data);
 			break;
 
 		case '4':
+			system("cls");
+			Array.remove(index);
+			break;
+
+		case '5':
+			system("cls");
+			Array.getsize();
 			break;
 
 		default:
 			continue;
 			break;
 		}
+		Menu(3);
 	}
 
 	return 0;
