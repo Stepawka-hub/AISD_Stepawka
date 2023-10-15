@@ -18,9 +18,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="stack.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="TApplication.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -30,9 +27,6 @@
       <Filter>Исходные файлы</Filter>
     </ClInclude>
     <ClInclude Include="dynamic_array.h">
-      <Filter>Исходные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="stack.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
     <ClInclude Include="TApplication.h">

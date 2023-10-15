@@ -37,6 +37,15 @@ int TApplication::Menu(int status) {
 		SetConsoleTextAttribute(hConsole, 12);
 		std::cout << " <0> - Вернуться в главное меню\n";
 		break;
+
+	case 4:
+		SetConsoleTextAttribute(hConsole, 14);
+		std::cout << "\n << Работа со стеком >>\n";
+		SetConsoleTextAttribute(hConsole, 11);
+		std::cout << "\n <1> - Добавить элемент в стек\n <2> - Удалить последний элемент\n <3> - Получить последний элемент\n <4> - Сортировочная станция\n";
+		SetConsoleTextAttribute(hConsole, 12);
+		std::cout << " <0> - Вернуться в главное меню\n";
+		break;
 	}
 
 	return 0;
@@ -115,6 +124,7 @@ int TApplication::LinkedListMenu() {
 			if (List.getsize() == 0) {
 				SetConsoleTextAttribute(hConsole, 12);
 				std::cout << "Список пуст!";
+				break;
 			}
 			SetConsoleTextAttribute(hConsole, 14);
 			std::cout << "Узел с конца списка был удалён!\n";
@@ -214,15 +224,9 @@ int TApplication::LinkedListMenu() {
 }
 
 int TApplication::StackMenu() {
-	system("cls");
-	SetConsoleTextAttribute(hConsole, 14);
-	std::cout << "\n << Работа со стеком >>\n";
-	SetConsoleTextAttribute(hConsole, 11);
-	std::cout << "\n <1> - Добавить узел в начало списка\n <2> - Добавить узел в конец списка\n <3> - Удалить узел сначала списка\n <4> - Удалить узел с конца списка\n <5> - Вывести данные узла по индексу";
-	SetConsoleTextAttribute(hConsole, 12);
-	std::cout << " <0> - Вернуться в главное меню\n";
-	
-	bool x = true;
+	Menu(4);
+	bool x = true; short index = 0;
+	int data;
 	while (x) {
 		switch (_getch()) {
 		case '0':
@@ -230,22 +234,54 @@ int TApplication::StackMenu() {
 			break;
 
 		case '1':
+			system("cls");
+			SetConsoleTextAttribute(hConsole, 11);
+			std::cout << "Введите данные: ";
+			SetConsoleTextAttribute(hConsole, 14);
+			std::cin >> data;
+			Stack.add_end(data);
+			std::cout << "Элемент был занесён в стек!\n";
+			system("pause");
 			break;
 
 		case '2':
+			system("cls");
+			if (Stack.getsize() == 0) {
+				SetConsoleTextAttribute(hConsole, 12);
+				std::cout << "Стек пуст!";
+				break;
+			}
+			SetConsoleTextAttribute(hConsole, 14);
+			std::cout << "Элемент был удалён из стека!\n";
+			Stack.delete_end();
+			system("pause");
 			break;
 
 		case '3':
+			system("cls");
+			if (Stack.getsize() == 0) {
+				SetConsoleTextAttribute(hConsole, 12);
+				std::cout << "Стек пуст!\n";
+				system("pause");
+				break;
+			}
+			SetConsoleTextAttribute(hConsole, 11);
+			std::cout << "Данные последнего элемента стека: ";
+			SetConsoleTextAttribute(hConsole, 14);
+			std::cout << Stack[Stack.getsize() - 1] << "\n\n";
+			system("pause");
 			break;
 
 		case '4':
 			break;
 
 		default:
-			continue;
 			break;
 		}
+		Menu(4);
 	}
+
+	return 0;
 
 	return 0;
 }

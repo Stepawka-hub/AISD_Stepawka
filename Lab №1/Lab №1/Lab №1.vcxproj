@@ -128,13 +128,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="stack.cpp" />
     <ClCompile Include="TApplication.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dynamic_array.h" />
     <ClInclude Include="linked_list.h" />
-    <ClInclude Include="stack.h" />
     <ClInclude Include="TApplication.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

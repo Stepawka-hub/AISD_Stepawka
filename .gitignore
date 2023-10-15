@@ -23,3 +23,6 @@ Lab №1/Lab №1/x64/Debug/vc143.idb
 Lab №1/Lab №1/x64/Debug/vc143.pdb
 Lab №1/x64/Debug/Lab №1.pdb
 Lab №1/Lab №1/x64/Debug/Lab №1.ilk
+*.tlog
+*.db
+*.pdb
