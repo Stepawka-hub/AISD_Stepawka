@@ -9,11 +9,12 @@ private:
 public:
 	DynamicArray();
 	DynamicArray(const DynamicArray<T>& copy); // Конструктор копирования
-	int get(int index);
 	int add(int index, T data);
 	int set(int index, T data);
 	int remove(int index);
 	int getsize();
+	void resize(int size);
+	T& operator[] (int i);
 	~DynamicArray();
 };
 
@@ -25,7 +26,7 @@ DynamicArray<T>::DynamicArray() {
 }
 
 template<typename T>
-DynamicArray<T>::DynamicArray(const DynamicArray<T>& copy) {
+DynamicArray<T>::DynamicArray(const DynamicArray<T>& copy) { // Конструктор копирования
 	size = copy.size;
 	capacity = size;
 	data = NULL;
@@ -38,28 +39,59 @@ DynamicArray<T>::DynamicArray(const DynamicArray<T>& copy) {
 }
 
 template<typename T>
-int DynamicArray<T>::get(int index) {
+int DynamicArray<T>::add(int index, T value) {
+	resize(this->size + 1);
+
+	for (int i = this->size - 1; i > index; --i)
+		data[i] = data[i - 1];
+
+	data[index] = value;
+
 	return 0;
 }
 
 template<typename T>
-int DynamicArray<T>::add(int index, T data) {
-	return 0;
-}
+int DynamicArray<T>::set(int index, T value) {
+	data[index] = value;
 
-template<typename T>
-int DynamicArray<T>::set(int index, T data) {
 	return 0;
 }
 
 template<typename T>
 int DynamicArray<T>::remove(int index) {
+	for (int i = index; i < this->size - 1; ++i)
+		data[i] = data[i + 1];
+
+	resize(this->size - 1);
+
 	return 0;
 }
 
 template<typename T>
 int DynamicArray<T>::getsize() {
 	return this->size;
+}
+
+template<typename T>
+void DynamicArray<T>::resize(int size) {
+	if (size > this->capacity) {
+		int capacity = std::max<int>(size, this->size * 2);
+		T* data = new T [capacity];
+
+		for (int i = 0; i < this->size; ++i)
+			data[i] = this->data[i];
+
+		delete[] this->data;
+		this->data = data;
+		this->capacity = capacity;
+	}
+
+	this->size = size;
+}
+
+template<typename T>
+T& DynamicArray<T>::operator[] (int index) {
+	return this->data[index];
 }
 
 template<typename T>

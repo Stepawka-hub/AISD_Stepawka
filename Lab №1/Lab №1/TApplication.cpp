@@ -252,7 +252,7 @@ int TApplication::StackMenu() {
 
 int TApplication::DynamicArrayMenu() {
 	Menu(3);
-	bool x = true; short index = 0;
+	bool x = true; short index = 0, arrsize = Array.getsize();
 	int data = 0;
 	while (x) {
 		switch (_getch()) {
@@ -262,27 +262,108 @@ int TApplication::DynamicArrayMenu() {
 
 		case '1':
 			system("cls");
-			Array.get(index);
+			arrsize = Array.getsize();
+			if (arrsize == 0) {
+				SetConsoleTextAttribute(hConsole, 12);
+				std::cout << "Массив пуст!\n";
+				system("pause");
+				break;
+			}
+			SetConsoleTextAttribute(hConsole, 11);
+			std::cout << "Укажите индекс элемента, значение которого нужно получить (0 - " << arrsize-1 << "): ";
+			SetConsoleTextAttribute(hConsole, 14);
+			std::cin >> index;
+			if (index > arrsize-1 || index < 0) {
+				std::cout << "Указан неверный индекс!\n";
+				system("pause");
+				break;
+			}
+
+			SetConsoleTextAttribute(hConsole, 11);
+			std::cout << "Значение элемента под указанным индексом: ";
+			SetConsoleTextAttribute(hConsole, 14);
+			std::cout << Array[index] << "\n";
+			system("pause");
 			break;
 
 		case '2':
 			system("cls");
+			arrsize = Array.getsize();
+			SetConsoleTextAttribute(hConsole, 11);
+			std::cout << "Укажите позицию нового элемента (0 - " << arrsize << "): ";
+			SetConsoleTextAttribute(hConsole, 14);
+			std::cin >> index;
+			if (index > arrsize || index < 0) {
+				std::cout << "Указан неверный индекс!\n";
+				system("pause");
+				break;
+			}
+			SetConsoleTextAttribute(hConsole, 11);
+			std::cout << "Введите значение нового элемента: ";
+			SetConsoleTextAttribute(hConsole, 14);
+			std::cin >> data;
 			Array.add(index, data);
+			std::cout << "Новый элемент был успешно добавлен!\n";
+			system("pause");
 			break;
 
 		case '3':
 			system("cls");
-			Array.set(index, data);
+			arrsize = Array.getsize();
+			if (arrsize == 0) {
+				SetConsoleTextAttribute(hConsole, 12);
+				std::cout << "Массив пуст!\n";
+				system("pause");
+				break;
+			}
+			SetConsoleTextAttribute(hConsole, 11);
+			std::cout << "Укажите индекс элемента, значение которого нужно изменить (0 - " << arrsize - 1 << "): ";
+			SetConsoleTextAttribute(hConsole, 14);
+			std::cin >> index;
+			if (index > arrsize - 1 || index < 0) {
+				std::cout << "Указан неверный индекс!\n";
+				system("pause");
+				break;
+			}
+			SetConsoleTextAttribute(hConsole, 11);
+			std::cout << "Введите новое значение элемента под указанным индексом: ";
+			SetConsoleTextAttribute(hConsole, 14);
+			std::cin >> data;
+			Array[index] = data;
+			std::cout << "Значение изменено!";
+			system("pause");
 			break;
 
 		case '4':
 			system("cls");
+			arrsize = Array.getsize();
+			if (arrsize == 0) {
+				SetConsoleTextAttribute(hConsole, 12);
+				std::cout << "Массив пуст!\n";
+				system("pause");
+				break;
+			}
+			SetConsoleTextAttribute(hConsole, 11);
+			std::cout << "Укажите позицию элемента, который нужно удалить (0 - " << arrsize - 1 << "): ";
+			SetConsoleTextAttribute(hConsole, 14);
+			std::cin >> index;
+			if (index > arrsize - 1 || index < 0) {
+				std::cout << "Указан неверный индекс!\n";
+				system("pause");
+				break;
+			}
 			Array.remove(index);
+			std::cout << "Элемент на указанной позиции был удалён из массива!\n";
+			system("pause");
 			break;
 
 		case '5':
 			system("cls");
-			Array.getsize();
+			SetConsoleTextAttribute(hConsole, 11);
+			std::cout << "Размер массива: ";
+			SetConsoleTextAttribute(hConsole, 14);
+			std::cout << Array.getsize() << "\n";
+			system("pause");
 			break;
 
 		default:

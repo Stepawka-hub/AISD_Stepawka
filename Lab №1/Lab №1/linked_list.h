@@ -50,9 +50,17 @@ Node<T>* LinkedList<T>::getnode(int index) {
 
 template<typename T>
 T LinkedList<T>::getdata(int index) {
-    Node<T>* ptr = begin;
-    for (int i = 0; i < index; ++i) {
-        ptr = ptr->next;
+    Node<T>* ptr;
+    if (index > this->size / 2) {
+        ptr = end;
+        for (int i = size; i > index+1; --i)
+            ptr = ptr->prev;
+    }
+
+    else {
+        ptr = begin;
+        for (int i = 0; i < index; ++i)
+            ptr = ptr->next;
     }
 
     return ptr->data;
