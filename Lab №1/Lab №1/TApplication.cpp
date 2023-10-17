@@ -1,6 +1,7 @@
 #include <iostream>
 #include <Windows.h>
 #include <conio.h>
+#include <string>
 #include "TApplication.h"
 
 HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -15,7 +16,7 @@ int TApplication::Menu(int status) {
 		SetConsoleTextAttribute(hConsole, 14);
 		std::cout << "\n << Меню >>\n";
 		SetConsoleTextAttribute(hConsole, 11);
-		std::cout << "\n <1> - Работа со списком\n <2> - Работа с динамическим массивом\n <3> - Работа со стеком\n";
+		std::cout << "\n <1> - Работа со списком\n <2> - Работа с динамическим массивом\n <3> - Работа со стеком\n <4> - Сортировочная станция\n";
 		SetConsoleTextAttribute(hConsole, 12);
 		std::cout << " <0> - Выход из программы\n";
 		break;
@@ -42,7 +43,7 @@ int TApplication::Menu(int status) {
 		SetConsoleTextAttribute(hConsole, 14);
 		std::cout << "\n << Работа со стеком >>\n";
 		SetConsoleTextAttribute(hConsole, 11);
-		std::cout << "\n <1> - Добавить элемент в стек\n <2> - Удалить последний элемент\n <3> - Получить последний элемент\n <4> - Сортировочная станция\n";
+		std::cout << "\n <1> - Добавить элемент в стек\n <2> - Удалить последний элемент\n <3> - Получить последний элемент\n";
 		SetConsoleTextAttribute(hConsole, 12);
 		std::cout << " <0> - Вернуться в главное меню\n";
 		break;
@@ -67,6 +68,9 @@ int TApplication::Executor() {
 			StackMenu();
 			break;
 		default:
+			break;
+		case '4':
+			SortingStation();
 			break;
 		}
 	}
@@ -272,9 +276,6 @@ int TApplication::StackMenu() {
 			system("pause");
 			break;
 
-		case '4':
-			break;
-
 		default:
 			break;
 		}
@@ -407,6 +408,215 @@ int TApplication::DynamicArrayMenu() {
 			break;
 		}
 		Menu(3);
+	}
+
+	return 0;
+}
+
+int TApplication::SortingStation() {
+	system("cls");
+	std::string Token;
+	SetConsoleTextAttribute(hConsole, 11);
+	std::cout << "Разрешённые символы: ";
+	SetConsoleTextAttribute(hConsole, 14);
+	std::cout << "+, -, *, /, ^, sin, cos, (, ), 0, 1, 2, 3, 4, 5, 6, 7, 8, 9\n";
+	SetConsoleTextAttribute(hConsole, 11);
+	std::cout << "Введите выражение (Обязателен пробел перед и после пробелов): ";
+	SetConsoleTextAttribute(hConsole, 14);
+	std::getline(std::cin, Token);
+	Token.push_back(' ');
+
+	while (QueueOutput.getsize())
+		QueueOutput.delete_end();
+	while (SortStack.getsize())
+		SortStack.delete_end();
+	SortingAlgorithm(Token);
+
+	return 1;
+}
+
+void TApplication::SortingAlgorithm(std::string & Token) {
+	std::string PartToken, top; short firstpos = 0, lastpos = 0, size = 0, obracket = 0, cbracket = 0;
+	SetConsoleTextAttribute(hConsole, 11);
+
+	for (int i = 0; i < Token.length(); ++i) {
+		size = SortStack.getsize();
+		lastpos = Token.find_first_of(' ', firstpos);
+		if (lastpos == std::string::npos)
+			break;
+		PartToken = Token.substr(firstpos, lastpos - firstpos);
+		firstpos = lastpos + 1;
+
+		if (isdigit(PartToken[0]))
+			QueueOutput.add_end(PartToken);
+
+		else if (PartToken == "cos")
+			SortStack.add_end(PartToken);
+
+		else if (PartToken == "sin")
+			SortStack.add_end(PartToken);
+
+		else if (IsOperator(PartToken)) {
+			if (size != 0)
+				top = SortStack[size - 1];
+			while ((IsOperator(top)) && (SortStack.getsize() != 0) && (IsPriority(top) >= IsPriority(PartToken))) {
+				QueueOutput.add_end(top);
+				SortStack.delete_end();
+				size = SortStack.getsize();
+				if (size != 0)
+					top = SortStack[size - 1];
+			}
+			SortStack.add_end(PartToken);
+		}
+
+		else if (PartToken[0] == '(') {
+			++obracket;
+			SortStack.add_end("(");
+		}
+
+		else if (PartToken[0] == ')') {
+			++cbracket;
+			if (cbracket > obracket) {
+				SetConsoleTextAttribute(hConsole, 12);
+				std::cout << "Составлено неверное выражение!\n";
+				system("pause");
+				return;
+			}
+
+			while (SortStack[SortStack.getsize() - 1] != "(") {
+				QueueOutput.add_end(SortStack[SortStack.getsize() - 1]);
+				SortStack.delete_end();
+				if (SortStack.getsize() == 0) {
+					SetConsoleTextAttribute(hConsole, 12);
+					std::cout << "Составлено неверное выражение!\n";
+					system("pause");
+					return;
+				}
+			}
+
+			SortStack.delete_end();
+			size = SortStack.getsize();
+			if (size != 0) {
+				if (SortStack[size - 1] == "sin" || SortStack[size - 1] == "cos") {
+					QueueOutput.add_end(SortStack[size - 1]);
+					SortStack.delete_end();
+				}
+			}
+		}
+
+		else {
+			SetConsoleTextAttribute(hConsole, 12);
+			std::cout << "Составлено неверное выражение!\n";
+			system("pause");
+			return;
+		}
+	}
+
+	if (obracket != cbracket) {
+		SetConsoleTextAttribute(hConsole, 12);
+		std::cout << "Составлено неверное выражение!\n";
+		system("pause");
+		return;
+	}
+
+	size = SortStack.getsize();
+	if (size != 0)
+		top = SortStack[size - 1];
+	while (IsOperator(top) && size > 0) {
+		if (top == "(") {
+			SetConsoleTextAttribute(hConsole, 12);
+			std::cout << "Составлено неверное выражение!\n";
+			system("pause");
+			return;
+		}
+
+		QueueOutput.add_end(top);
+		SortStack.delete_end();
+		size = SortStack.getsize();
+		if (size != 0)
+			top = SortStack[size - 1];
+	}
+
+	SetConsoleTextAttribute(hConsole, 11);
+	std::cout << "Полученное выражение: ";
+	SetConsoleTextAttribute(hConsole, 14);
+	for (int i = 0; i < QueueOutput.getsize(); ++i)
+		std::cout << QueueOutput[i] << " ";
+
+	SetConsoleTextAttribute(hConsole, 11);
+	std::cout << "\nПодсчитанное выражение: ";
+	SetConsoleTextAttribute(hConsole, 14);
+	std::cout << GetResult();
+	std::cout << "\n";
+	system("pause");
+}
+
+bool TApplication::IsOperator(std::string& Token) {
+	return Token == "+" || Token == "-" || Token == "*" || Token == "/" || Token == "^";
+}
+
+int TApplication::IsPriority(std::string& op1) {
+	if (op1 == "^")
+		return 3;
+	if (op1 == "*" || op1 == "/")
+		return 2;
+	if (op1 == "+" || op1 == "-")
+		return 1;
+
+	return 0;
+}
+
+double TApplication::GetResult() {
+	std::string Token;
+	LinkedList<double> CalcStack;
+	double op1, op2;
+
+	for (int i = 0; i < QueueOutput.getsize(); ++i) {
+		Token = QueueOutput[i];
+		if (isdigit(Token[0]))
+			CalcStack.add_end(atof(Token.c_str()));
+
+		else if (Token == "sin" || Token == "cos") {
+			op1 = CalcStack[CalcStack.getsize() - 1];
+			CalcStack.delete_end();
+
+			if (Token == "cos")
+				CalcStack.add_end(cos(op1));
+			else
+				CalcStack.add_end(sin(op1));
+		}
+
+		else {
+			op2 = CalcStack[CalcStack.getsize() - 1];
+			CalcStack.delete_end();
+			op1 = CalcStack[CalcStack.getsize() - 1];
+			CalcStack.delete_end();
+
+			if (Token == "^")
+				CalcStack.add_end(pow(op1, op2));
+			if (Token == "+")
+				CalcStack.add_end(op1 + op2);
+			else if (Token == "-")
+				CalcStack.add_end(op1 - op2);
+			else if (Token == "*")
+				CalcStack.add_end(op1 * op2);
+			else if (Token == "/") {
+				if (op2 == 0) {
+					SetConsoleTextAttribute(hConsole, 12);
+					std::cout << "\nЗнаменатель не может быть равен 0!\n";
+					return 0;
+				}
+				CalcStack.add_end(op1 / op2);
+			}
+		}
+	}
+
+	if (CalcStack.getsize() != 0)
+		return CalcStack[CalcStack.getsize() - 1];
+	else {
+		SetConsoleTextAttribute(hConsole, 12);
+		std::cout << "Составлено неверное выражение!\n";
+		system("pause");
 	}
 
 	return 0;
