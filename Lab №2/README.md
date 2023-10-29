@@ -1,2 +1,0 @@
-# AISD_Stepawka
- 

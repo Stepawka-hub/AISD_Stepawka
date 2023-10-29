@@ -34,3 +34,16 @@ Lab №1/Lab №1/x64/Debug/Lab №1.exe.recipe
 Lab №1/Lab №1/x64/Debug/main.obj
 Lab №1/Lab №1/x64/Debug/TApplication.obj
 Lab №1/Lab №1/x64/Debug/vcpkg.applocal.log
+*.ipch
+*.opendb
+*.db-wal
+*.db-shm
+Lab №2/.vs/Lab №2/v17/.suo
+*.obj
+*.recipe
+*.ilk
+*.log
+Lab №2/x64/Debug/Lab №2.vcxproj.FileListAbsolute.txt
+Lab №2/x64/Debug/tapplication.obj.enc
+Lab №2/x64/Debug/vc143.idb
+*.exe
