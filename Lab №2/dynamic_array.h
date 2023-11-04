@@ -1,4 +1,5 @@
 #pragma once
+#include "Sorting.h"
 
 template<typename T>
 class DynamicArray {
@@ -14,6 +15,7 @@ public:
 	int remove(int index);
 	int getsize();
 	void resize(int size);
+	int sort();
 	T& operator[] (int i);
 	~DynamicArray();
 };
@@ -87,6 +89,19 @@ void DynamicArray<T>::resize(int size) {
 	}
 
 	this->size = size;
+}
+
+template<typename T>
+int DynamicArray<T>::sort() {
+	int minrun = GetMinrun(size);
+	int index = 0;
+
+	SortingInserts(data, 0, size - 1);
+
+	//for (int i = 0; i < size; i += minrun)
+	//	SortingInserts(data, i, std::min(i, size - 1)); // –азбиваем массивы на подмассивы размерности minrun, затем каждый из них сортируем вставками
+
+	return 1;
 }
 
 template<typename T>

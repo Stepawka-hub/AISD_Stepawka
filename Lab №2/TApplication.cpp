@@ -2,6 +2,7 @@
 #include <string>
 #include "TApplication.h"
 
+#define RAND_MAX = 100
 
 TApplication::TApplication() {
 }
@@ -23,7 +24,8 @@ int TApplication::Menu(int status) {
 
 	case 3:
 		std::cout << "\n\x1B[93m << Работа с динамическим массивом >>\033[0m\n";
-		std::cout << "\n \x1B[96m<1> - Получить значение элемента\n <2> - Добавить элемент в массив\n <3> - Изменить значение элемента\n <4> - Удалить элемент из массива\n <5> - Вывести размер массива\033[0m\n";
+		std::cout << "\n\x1B[93m << Основные функции >>\n \x1B[96m<1> - Получить значение элемента\n <2> - Добавить элемент в массив\n <3> - Изменить значение элемента\n <4> - Удалить элемент из массива\n <5> - Вывести размер массива\033[0m\n";
+	    std::cout << "\n\x1B[93m << Вспомогательные функции >>\n \x1B[96m<6> - Заполнить массив случайными числами\n <7> - Вывести все элементы массива\n <8> - Очистить весь массив\n <9> - Отсортировать массив\033[0m\n";
 		std::cout << "\x1B[91m <0> - Вернуться в главное меню\033[0m\n";
 		break;
 
@@ -245,6 +247,7 @@ int TApplication::StackMenu() {
 int TApplication::DynamicArrayMenu() {
 	Menu(3);
 	bool x = true; short index = 0, arrsize = Array.getsize();
+	int i, elements;
 	int data = 0, key;
 	while (x) {
 		std::cout << "\n\x1B[93m Введите нужный пункт меню: \x1B[96m";
@@ -262,9 +265,9 @@ int TApplication::DynamicArrayMenu() {
 				system("pause");
 				break;
 			}
-			std::cout << "\x1B[96mУкажите индекс элемента, значение которого нужно получить (0 - " << arrsize-1 << "): \x1B[93m";
-				std::cin >> index;
-			if (index > arrsize-1 || index < 0) {
+			std::cout << "\x1B[96mУкажите индекс элемента, значение которого нужно получить (0 - " << arrsize - 1 << "): \x1B[93m";
+			std::cin >> index;
+			if (index > arrsize - 1 || index < 0) {
 				std::cout << "\x1B[91mУказан неверный индекс!\n";
 				system("pause");
 				break;
@@ -341,9 +344,61 @@ int TApplication::DynamicArrayMenu() {
 			system("pause");
 			break;
 
+		case 6:
+			elements = 0;
+			arrsize = Array.getsize();
+
+			system("cls");
+			std::cout << "\x1B[96mУкажите количество добавляемых элементов: \x1B[93m";
+			std::cin >> elements;
+			for (i = 0; i < elements; ++i)
+				Array.add(arrsize + i, rand());
+			std::cout << "Элементы были успешно добавлены!\n";
+			system("pause");
+			break;
+
+		case 7:
+			arrsize = Array.getsize();
+			system("cls");
+
+			if (arrsize == 0) {
+				std::cout << "\x1B[91mМассив пуст!\n";
+				system("pause");
+				break;
+			}
+
+			for (i = 0; i < arrsize; ++i)
+				std::cout << "\x1B[96mElement [" << i << "]:\t\x1B[93m" << Array[i] << "\n";
+			system("pause");
+			break;
+
+
+		case 8:
+			arrsize = Array.getsize();
+			system("cls");
+
+			if (arrsize == 0) {
+				std::cout << "\x1B[91mМассив пуст!\n";
+				system("pause");
+				break;
+			}
+
+			for (i = 1; i <= arrsize; ++i)
+				Array.remove(arrsize - i);
+			system("pause");
+			break;
+
+		case 9:
+			system("cls");
+			Array.sort();
+			std::cout << "\x1B[93mМассив отсортирован!\x1B[93m\n";
+			system("pause");
+			break;
+
 		default:
 			break;
 		}
+
 		Menu(3);
 	}
 

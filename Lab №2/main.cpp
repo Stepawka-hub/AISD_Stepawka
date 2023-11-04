@@ -1,6 +1,5 @@
 ﻿#include <iostream>
 #include "TApplication.h"
-#include "linked_list.h"
 
 /*
 1. Сортировка вставками
