@@ -1,6 +1,8 @@
 #pragma once
 #include "Sorting.h"
 
+const int RUN = 32;
+
 template<typename T>
 class DynamicArray {
 private:
@@ -93,13 +95,21 @@ void DynamicArray<T>::resize(int size) {
 
 template<typename T>
 int DynamicArray<T>::sort() {
-	int minrun = GetMinrun(size);
+	int Tsize = this->size;
+	int minrun = GetMinrun(Tsize);
 	int index = 0;
 
-	SortingInserts(data, 0, size - 1);
+	for (int i = 0; i < Tsize; i += minrun)
+		SortingInserts(data, i, std::min(i + minrun - 1, Tsize - 1)); // Разбиваем массивы на подмассивы размерности minrun, затем каждый из них сортируем вставками
 
-	//for (int i = 0; i < size; i += minrun)
-	//	SortingInserts(data, i, std::min(i, size - 1)); // Разбиваем массивы на подмассивы размерности minrun, затем каждый из них сортируем вставками
+	for (int size = minrun; size < Tsize; size *= 2) { // Определяем размер подмассива для сортировки и увеличиваем его в два раза на каждой итерации
+		for (int left = 0; left < Tsize; left += 2 * size) { // Определяем начальную позицию левого подмассива для текущего размера. Проход по всему массиву
+			int mid = left + size - 1; // Середина текущего подмассива
+			int right = std::min((left + 2 * size - 1), (Tsize - 1)); // Определение правого конца текущего подмассива.
+			if (mid < right)
+				MergingArrays(data, left, mid, right);
+		}
+	}
 
 	return 1;
 }

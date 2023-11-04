@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string>
+#include <stdlib.h>
+#include <chrono>
 #include "TApplication.h"
-
-#define RAND_MAX = 100
 
 TApplication::TApplication() {
 }
@@ -246,9 +246,9 @@ int TApplication::StackMenu() {
 
 int TApplication::DynamicArrayMenu() {
 	Menu(3);
-	bool x = true; short index = 0, arrsize = Array.getsize();
-	int i, elements;
-	int data = 0, key;
+	bool x = true;
+	int data = 0, index, key, arrsize = Array.getsize();
+
 	while (x) {
 		std::cout << "\n\x1B[93m Введите нужный пункт меню: \x1B[96m";
 		std::cin >> key;
@@ -306,7 +306,7 @@ int TApplication::DynamicArrayMenu() {
 			std::cout << "\x1B[96mУкажите индекс элемента, значение которого нужно изменить (0 - " << arrsize - 1 << "): \x1B[93m";
 			std::cin >> index;
 			if (index > arrsize - 1 || index < 0) {
-				std::cout << "\x1B[91m Указан неверный индекс!\n";
+				std::cout << "\x1B[91mУказан неверный индекс!\n";
 				system("pause");
 				break;
 			}
@@ -345,14 +345,15 @@ int TApplication::DynamicArrayMenu() {
 			break;
 
 		case 6:
-			elements = 0;
+			int elements;
 			arrsize = Array.getsize();
+			srand(time(NULL));
 
 			system("cls");
 			std::cout << "\x1B[96mУкажите количество добавляемых элементов: \x1B[93m";
 			std::cin >> elements;
-			for (i = 0; i < elements; ++i)
-				Array.add(arrsize + i, rand());
+			for (int i = 0; i < elements; ++i)
+				Array.add(arrsize + i, rand() * rand()); // Умножением расширил диапазон
 			std::cout << "Элементы были успешно добавлены!\n";
 			system("pause");
 			break;
@@ -367,7 +368,7 @@ int TApplication::DynamicArrayMenu() {
 				break;
 			}
 
-			for (i = 0; i < arrsize; ++i)
+			for (int i = 0; i < arrsize; ++i)
 				std::cout << "\x1B[96mElement [" << i << "]:\t\x1B[93m" << Array[i] << "\n";
 			system("pause");
 			break;
@@ -383,19 +384,20 @@ int TApplication::DynamicArrayMenu() {
 				break;
 			}
 
-			for (i = 1; i <= arrsize; ++i)
+			for (int i = 1; i <= arrsize; ++i)
 				Array.remove(arrsize - i);
 			system("pause");
 			break;
 
 		case 9:
 			system("cls");
+			auto start_time = std::chrono::high_resolution_clock::now();
 			Array.sort();
-			std::cout << "\x1B[93mМассив отсортирован!\x1B[93m\n";
+			auto end_time = std::chrono::high_resolution_clock::now();
+			auto duration_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+			std::cout << "\x1B[93mМассив отсортирован!\n";
+			std::cout << "Затраченное время: \x1B[96m" << duration_ms.count() << " мс.\x1B[93m\n";
 			system("pause");
-			break;
-
-		default:
 			break;
 		}
 

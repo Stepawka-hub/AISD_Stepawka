@@ -22,3 +22,35 @@ void SortingInserts (int Array[], int left, int right) { // Сортировка подмассив
 		}
 	}
 }
+
+void MergingArrays (int Array[], int left, int mid, int right) { // Разбиваем массив на две части - Левую часть и правую часть
+    int len1 = mid - left + 1, len2 = right - mid;
+    int * LeftPart = new int [len1], * RightPart = new int [len2]; 
+
+    for (int i = 0; i < len1; ++i)
+        LeftPart[i] = Array[left + i]; // Заполняем левую часть (Левый подмассив)
+
+    for (int i = 0; i < len2; ++i)
+        RightPart[i] = Array[mid + 1 + i]; // Заполняем правую часть (Правый подмассив)
+
+    int i = 0, j = 0, k = left; // Объединяем эти два массива в один путём сравнения
+    while (i < len1 && j < len2) { // Пока индексы i и j не дойдут до конца массивов
+        if (LeftPart[i] <= RightPart[j]) // Сравниваем элементы и заносим наименьший в итоговый массив
+            Array[k] = LeftPart[i++];
+        else
+            Array[k] = RightPart[j++];
+        ++k;
+    }
+
+    // Оставшиеся элементы из левого массива заносим в основной (если они есть)
+    while (i < len1) {
+        Array[k] = LeftPart[i++];
+        ++k;
+    }
+
+    // Аналогично с правым массивом
+    while (j < len2) {
+        Array[k] = RightPart[j++];
+        ++k;
+    }
+}
