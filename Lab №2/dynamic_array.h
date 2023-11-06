@@ -1,7 +1,6 @@
 #pragma once
-#include "Sorting.h"
 
-const int RUN = 32;
+#define REPEATS 7
 
 template<typename T>
 class DynamicArray {
@@ -9,6 +8,9 @@ private:
 	T* data;
 	int size;
 	int capacity;
+	int GetMinrun(int);
+	void SortingInserts(int, int);
+	void MergingArrays(int, int, int);
 public:
 	DynamicArray();
 	DynamicArray(const DynamicArray<T>& copy); // Конструктор копирования
@@ -98,20 +100,112 @@ int DynamicArray<T>::sort() {
 	int Tsize = this->size;
 	int minrun = GetMinrun(Tsize);
 	int index = 0;
-
 	for (int i = 0; i < Tsize; i += minrun)
-		SortingInserts(data, i, std::min(i + minrun - 1, Tsize - 1)); // Разбиваем массивы на подмассивы размерности minrun, затем каждый из них сортируем вставками
-
-	for (int size = minrun; size < Tsize; size *= 2) { // Определяем размер подмассива для сортировки и увеличиваем его в два раза на каждой итерации
-		for (int left = 0; left < Tsize; left += 2 * size) { // Определяем начальную позицию левого подмассива для текущего размера. Проход по всему массиву
-			int mid = left + size - 1; // Середина текущего подмассива
-			int right = std::min((left + 2 * size - 1), (Tsize - 1)); // Определение правого конца текущего подмассива.
+		SortingInserts(i, std::min(i + minrun - 1, Tsize - 1));
+	for (int size = minrun; size < Tsize; size *= 2) { 
+		for (int left = 0; left < Tsize; left += 2 * size) {
+			int mid = left + size - 1;
+			int right = std::min((left + 2 * size - 1), (Tsize - 1));
 			if (mid < right)
-				MergingArrays(data, left, mid, right);
+				MergingArrays(left, mid, right);
 		}
 	}
 	return 1;
 }
+
+template<typename T>
+int DynamicArray<T>::GetMinrun(int N) {
+	int M = 0;
+	while (N >= 64) {
+		M |= N & 1;
+		N >>= 1;
+	}
+
+	return M + N;
+}
+
+template<typename T>
+void DynamicArray<T>::SortingInserts(int left, int right) {
+	for (int i = left + 1; i <= right; ++i) { // Считаем, что первый элемент это уже отсортированная часть массива
+		int temp = data[i]; // Элемент, который будет сравниваться с элементами отсортированной части
+		int k = i - 1; // Индекс последнего элемента в отсортированной части (является наибольшим в той части)
+
+		while (k >= left && data[k] > temp) { // Пока элемент из не отсортированной части меньше, чем k-ый элемент в отсортированной части (Ищет нужную позицию)
+			data[k + 1] = data[k];
+			data[k] = temp;
+			--k;
+		}
+	}
+}
+
+template<typename T>
+void DynamicArray<T>::MergingArrays(int left, int mid, int right) {
+	int len1 = mid - left + 1, len2 = right - mid, repeats1 = 0, repeats2 = 0;
+
+	//int* LeftPart = new int[len1];
+	DynamicArray<int> LeftPart;
+	LeftPart.resize(len1);
+
+	for (int i = 0; i < len1; ++i)
+		LeftPart[i] = data[left + i]; // Заполняем левую часть (Левый подмассив)
+
+	int i = 0, j = 0, k = left, rightpos = mid + 1; // Объединяем эти два массива в один путём сравнения
+	while (i < len1 && j < len2) { // Пока индексы i и j не дойдут до конца массивов
+		if (repeats1 >= REPEATS || repeats2 >= REPEATS) { // Было найдено REPEATS повторений (7)
+			int degree = 0;
+			if (repeats1 >= REPEATS) { // REPEATS (7) раз произошла ситуация, когда элемент из левой части меньше очередного элемента из правой
+				repeats1 = 0;
+				// Формула: (n + 2^i)
+				for (int l = i + pow(2, degree); l < len1; l += pow(2, degree)) { // Быстрее проходимся по массиву, сравнивая элементы
+					if (LeftPart[l] < data[rightpos + j])
+						++degree;
+					else { // Если очередной сравниваемый элемент оказался меньше, то возвращаемся к прошлой итерации
+						l -= pow(2, degree);
+						while (i < l)
+							data[k++] = LeftPart[i++]; // Копируем все подходящие элементы в наш итоговый массив
+						break; // Выходим из режима галопа
+					}
+				}
+			}
+
+			else { // REPEATS (7) раз произошла ситуация, когда элемент из правой части меньше очередного элемента из левой
+				repeats2 = 0;
+				// Формула: (n + 2^i)
+				for (int r = j + rightpos + pow(2, degree); r < right; r += pow(2, degree)) { // Быстрее проходимся по массиву, сравнивая элементы
+					if (data[r] < LeftPart[i])
+						++degree;
+					else { // Если очередной сравниваемый элемент оказался меньше, то возвращаемся к прошлой итерации
+						r -= pow(2, degree);
+						while (j + rightpos < r)
+							data[k++] = data[rightpos + j++];
+						break; // Выходим из режима галопа
+					}
+				}
+			}
+		}
+
+		if (LeftPart[i] <= data[rightpos + j]) { // Сравниваем элементы и заносим наименьший в итоговый массив
+			data[k] = LeftPart[i++];
+			++repeats1;
+			repeats2 = 0;
+		}
+
+		else {
+			data[k] = data[rightpos + j++];
+			++repeats2;
+			repeats1 = 0;
+		}
+
+		++k;
+	}
+
+	// Оставшиеся элементы из левого массива заносим в основной (если они есть)
+	while (i < len1) {
+		data[k] = LeftPart[i++];
+		++k;
+	}
+}
+
 
 template<typename T>
 T& DynamicArray<T>::operator[] (int index) {
