@@ -110,7 +110,6 @@ int DynamicArray<T>::sort() {
 				MergingArrays(data, left, mid, right);
 		}
 	}
-
 	return 1;
 }
 

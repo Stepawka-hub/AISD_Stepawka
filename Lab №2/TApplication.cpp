@@ -353,7 +353,7 @@ int TApplication::DynamicArrayMenu() {
 			std::cout << "\x1B[96m”кажите количество добавл€емых элементов: \x1B[93m";
 			std::cin >> elements;
 			for (int i = 0; i < elements; ++i)
-				Array.add(arrsize + i, rand() * rand()); // ”множением расширил диапазон
+				Array.add(arrsize + i, rand()); // ”множением на rand() можно расширить диапазон
 			std::cout << "Ёлементы были успешно добавлены!\n";
 			system("pause");
 			break;
