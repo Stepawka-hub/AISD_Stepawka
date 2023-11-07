@@ -371,7 +371,7 @@ int TApplication::DynamicArrayMenu() {
 			for (int i = 0; i < arrsize; ++i) {
 				std::cout << "\x1B[96mElement [" << i << "]:\t\x1B[93m" << Array[i] << "\n";
 				if (Array[i] < Array[i - 1])
-					std::cout << "MAMA";
+					std::cout << "\x1B[91mЭлемент отсортирован неверно!";
 			}
 			system("pause");
 			break;
