@@ -3,7 +3,7 @@
 
 class TApplication {
 private:
-	BinaryTree<int> MyTree;
+	BinaryTree<int> BTree;
 	int Menu(int);
 	int BinaryMenu();
 	int AVLMenu();

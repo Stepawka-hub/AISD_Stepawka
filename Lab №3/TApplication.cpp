@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <stdlib.h>
 #include "TApplication.h"
@@ -60,6 +61,8 @@ int TApplication::Executor() {
 
 int TApplication::BinaryMenu() {
 	Menu(2);
+	std::ifstream input("parsing.txt");
+	std::string line;
 	bool x = true; short index = 0;
 	int data = 0, key;
 	while (x) {
@@ -72,13 +75,19 @@ int TApplication::BinaryMenu() {
 
 		case 1:
 			system("cls");
-			std::cout << "\x1B[93m*Дерево считывается с файла*\n";
+			if (input.is_open())
+				std::getline(input, line);
+			else
+				std::cout << "\x1B[93mФайл не удалось открыть!\n";
+			BTree.Parsing(line);
 			system("pause");
 			break;
 
 		case 2:
 			system("cls");
-			std::cout << "\x1B[93m*Дерево выводится в консоль*\n";
+			std::cout << "\x1B[93m";
+			BTree.BypassInDepth(BTree.GetRoot());
+			std::cout << "\n";
 			system("pause");
 			break;
 
