@@ -28,7 +28,7 @@ int TApplication::Menu(int status) {
 		std::cout << "\n \x1B[96m<1> - Построить дерево на основе бинарного\n <2> - Алгоритм вставки\n <3> - Алгоритм поиска\n <4> - Алгоритм удаления\033[0m\n";
 		
 		std::cout << "\n\x1B[93m << Виды обходов >>\033[0m";
-		std::cout << "\n \x1B[96m<5> - Обход в ширину\n <6> - Прямой обход\n <7> - Центрированный обход\n <8> - Обратный обход\033[0m\n";
+		std::cout << "\n \x1B[96m<5> - Обход в ширину\n <6> - Прямой обход\n <7> - Центрированный обход\n <8> - Обратный обход\n <9> - Обход в глубину (Итеративный вариант)\033[0m\n";
 		std::cout << "\x1B[91m <0> - Вернуться в главное меню\033[0m\n";
 		break;
 	}
@@ -171,6 +171,14 @@ int TApplication::AVLMenu() {
 			system("cls");
 			std::cout << "\x1B[93m*Обратный обход*\x1B[96m\n";
 			AVLTree.orderLRC();
+			std::cout << "\n";
+			system("pause");
+			break;
+
+		case 9:
+			system("cls");
+			std::cout << "\x1B[93m*Обход в глубину (Итеративный вариант)*\x1B[96m\n";
+			AVLTree.traversalIter();
 			std::cout << "\n";
 			system("pause");
 			break;

@@ -36,7 +36,7 @@ private:
     void orderCLR(AVLNode<T>*); // Прямой порядок
     void orderLCR(AVLNode<T>*); // Центрированный порядок
     void orderLRC(AVLNode<T>*); // Обратный порядок
-    void orderLRC(AVLNode<T>*); // Обратный порядок
+    void traversalIter(AVLNode<T>*); // Обход в глубину (итеративный вариант)
     void widthTraversal(AVLNode<T>*); // Обход в ширину
 
 public:
@@ -48,6 +48,7 @@ public:
     void orderCLR();
     void orderLCR();
     void orderLRC();
+    void traversalIter();
     void widthTraversal();
 };
 
@@ -313,6 +314,33 @@ void AVLTree<T>::orderLRC(AVLNode<T>* tree) {
 template <typename T>
 void AVLTree<T>::orderLRC() {
     orderLRC(this->root);
+}
+
+// Обход в глубину (Итеративный вариант)
+template <typename T>
+void AVLTree<T>::traversalIter(AVLNode<T>* root) {
+    if (root == NULL)
+        return;
+
+    std::stack<AVLNode<T>*> IterStack;
+    IterStack.push(root);
+
+    while (!IterStack.empty()) {
+        AVLNode<T>* TNode = IterStack.top();
+        IterStack.pop();
+        std::cout << TNode->data << " ";
+
+        if (TNode->right)
+            IterStack.push(TNode->right);
+
+        if (TNode->left)
+            IterStack.push(TNode->left);
+    }
+}
+
+template <typename T>
+void AVLTree<T>::traversalIter() {
+    traversalIter(this->root);
 }
 
 // Обход в ширину
