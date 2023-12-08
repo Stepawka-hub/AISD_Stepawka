@@ -22,6 +22,7 @@ private:
     int diffheight(AVLNode<T>*); // Разница в высотах между поддеревьями
     AVLNode<T>* balance(AVLNode<T>*); // Балансировка АВЛ дерева
     AVLNode<T>* insert(AVLNode<T>*, T); // Вставка элемента
+    AVLNode<T>* search(AVLNode<T>*, T); // Поиск элемента
 
     // Повороты
     AVLNode<T>* rr_rotation(AVLNode<T>*);
@@ -38,9 +39,10 @@ public:
     AVLTree();
     void create(BinaryTree<T>);
     T insert(T);
-    void orderCLR(); // Прямой порядок (Вызов из интерфейса)
-    void orderLCR(); // Центрированный порядок (Вызов из интерфейса)
-    void orderLRC(); // Обратный порядок (Вызов из интерфейса)
+    AVLNode<T>* search(T);
+    void orderCLR();
+    void orderLCR();
+    void orderLRC();
 };
 
 template <typename T>
@@ -77,7 +79,7 @@ template <typename T>
 int AVLTree<T>::height(AVLNode<T>* TNode) {
     int AVLheight = 0;
 
-    if (TNode != NULL) { // Узел не пуст
+    if (TNode != nullptr) { // Узел есть
         int hleft = height(TNode->left); // Высота левого поддерева
         int hright = height(TNode->right); // Высота правого поддерева
         int max_height = std::max(hleft, hright);
@@ -161,7 +163,7 @@ AVLNode<T>* AVLTree<T>::balance(AVLNode<T>* TNode) {
 // Вставка элемента
 template <typename T>
 AVLNode<T>* AVLTree<T>::insert(AVLNode<T>* root, T data) {
-    if (root == NULL)
+    if (root == nullptr)
         return new AVLNode<T>(data);
 
     else if (data < root->data) {
@@ -183,10 +185,34 @@ T AVLTree<T>::insert(T data) {
     return data;
 }
 
+// Поиск узла по ключу
+template <typename T>
+AVLNode<T>* AVLTree<T>::search(AVLNode<T>* TNode, T key) {
+    if (TNode == nullptr) {
+        std::cout << "\n\x1B[93mУзел с указанным ключом\x1B[91m не был найден!\n";
+        return TNode;
+    }
+
+    else if (TNode->data == key) {
+        std::cout << "\n\x1B[93mУзел с указанным ключом\x1B[96m был найден!\n";
+        return TNode;
+    }
+
+    if (key < TNode->data)
+        return search(TNode->left, key);
+    else
+        return search(TNode->right, key);
+}
+
+template <typename T>
+AVLNode<T>* AVLTree<T>::search(T key) {
+    return search(root, key);
+}
+
 // Обход - Прямой порядок
 template <typename T>
 void AVLTree<T>::orderCLR(AVLNode<T>* tree) {
-    if (tree == NULL)
+    if (tree == nullptr)
         return;
     std::cout << tree->data << "  ";
     orderCLR(tree->left);
@@ -201,7 +227,7 @@ void AVLTree<T>::orderCLR() {
 // Обход - Центрированный порядок
 template <typename T>
 void AVLTree<T>::orderLCR(AVLNode<T>* tree) {
-    if (tree == NULL)
+    if (tree == nullptr)
         return;
     orderLCR(tree->left);
     std::cout << tree->data << "  ";
@@ -216,7 +242,7 @@ void AVLTree<T>::orderLCR() {
 // Обход - Обратный порядок
 template <typename T>
 void AVLTree<T>::orderLRC(AVLNode<T>* tree) {
-    if (tree == NULL)
+    if (tree == nullptr)
         return;
     orderLRC(tree->left);
     orderLRC(tree->right);

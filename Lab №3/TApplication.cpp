@@ -131,7 +131,9 @@ int TApplication::AVLMenu() {
 
 		case 3:
 			system("cls");
-			std::cout << "\x1B[93m*Алгоритм поиска*\n";
+			std::cout << "\x1B[93mВведите ключ узла, который нужно найти:\x1B[96m ";
+			std::cin >> data;
+			AVLTree.search(data);
 			system("pause");
 			break;
 
