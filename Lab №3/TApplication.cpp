@@ -25,10 +25,10 @@ int TApplication::Menu(int status) {
 	case 3:
 		std::cout << "\n\x1B[93m << Работа с АВЛ деревом >>\033[0m\n";
 		std::cout << "\n\x1B[93m << Основные функции >>\033[0m";
-		std::cout << "\n \x1B[96m<1> - Считать дерево с файла\n <2> - Вывести элементы дерева на экран\n <3> - Алгоритм вставки\n <4> - Алгоритм поиска\n <5> - Алгоритм удаления\033[0m\n";
+		std::cout << "\n \x1B[96m<1> - Построить дерево на основе бинарного\n <2> - Алгоритм вставки\n <3> - Алгоритм поиска\n <4> - Алгоритм удаления\033[0m\n";
 		
 		std::cout << "\n\x1B[93m << Виды обходов >>\033[0m";
-		std::cout << "\n \x1B[96m<6> - Обход в ширину\n <7> - Прямой обход\n <8> - Центрированный обход\n <9> - Обратный обход\033[0m\n";
+		std::cout << "\n \x1B[96m<5> - Обход в ширину\n <6> - Прямой обход\n <7> - Центрированный обход\n <8> - Обратный обход\033[0m\n";
 		std::cout << "\x1B[91m <0> - Вернуться в главное меню\033[0m\n";
 		break;
 	}
@@ -104,7 +104,7 @@ int TApplication::BinaryMenu() {
 int TApplication::AVLMenu() {
 	Menu(3);
 	bool x = true; short index = 0;
-	int data = 0, key;
+	unsigned int data = 0, key;
 	while (x) {
 		std::cout << "\n\x1B[93m Введите нужный пункт меню: \x1B[96m";
 		std::cin >> key;
@@ -115,55 +115,59 @@ int TApplication::AVLMenu() {
 
 		case 1:
 			system("cls");
-			std::cout << "\x1B[93m*Дерево считывается с файла*\n";
+			AVLTree.create(BTree);
+			std::cout << "\x1B[96m*АВЛ дерево было создано на основе бинарного!*\n\x1B[93m";
 			system("pause");
 			break;
 
 		case 2:
 			system("cls");
-			std::cout << "\x1B[93m*Дерево выводится на экран*\n";
+			std::cout << "\x1B[93mВведите значение (ключ) нового узла:\x1B[96m ";
+			std::cin >> data;
+			AVLTree.insert(data);
+			std::cout << "\x1B[96mУзел был успешно добавлен!\n";
 			system("pause");
 			break;
 
 		case 3:
 			system("cls");
-			std::cout << "\x1B[93m*Алгоритм вставки*\n";
+			std::cout << "\x1B[93m*Алгоритм поиска*\n";
 			system("pause");
 			break;
 
 		case 4:
 			system("cls");
-			std::cout << "\x1B[93m*Алгоритм поиска*\n";
+			std::cout << "\x1B[93m*Алгоритм удаления*\n";
 			system("pause");
 			break;
 
 		case 5:
 			system("cls");
-			std::cout << "\x1B[93m*Алгоритм удаления*\n";
+			std::cout << "\x1B[93m*Обход в ширину*\n";
 			system("pause");
 			break;
 
 		case 6:
 			system("cls");
-			std::cout << "\x1B[93m*Обход в ширину*\n";
+			std::cout << "\x1B[93m*Прямой обход*\x1B[96m\n";
+			AVLTree.orderCLR();
+			std::cout << "\n";
 			system("pause");
 			break;
 
 		case 7:
 			system("cls");
-			std::cout << "\x1B[93m*Прямой обход*\n";
+			std::cout << "\x1B[93m*Центрированный обход*\x1B[96m\n";
+			AVLTree.orderLCR();
+			std::cout << "\n";
 			system("pause");
 			break;
 
 		case 8:
 			system("cls");
-			std::cout << "\x1B[93m*Центрированный обход*\n";
-			system("pause");
-			break;
-
-		case 9:
-			system("cls");
-			std::cout << "\x1B[93m*Обратный обход*\n";
+			std::cout << "\x1B[93m*Обратный обход*\x1B[96m\n";
+			AVLTree.orderLRC();
+			std::cout << "\n";
 			system("pause");
 			break;
 
