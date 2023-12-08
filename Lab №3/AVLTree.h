@@ -329,7 +329,7 @@ void AVLTree<T>::traversalIter(AVLNode<T>* root) {
     while (!IterStack.empty()) {
         AVLNode<T>* TNode = IterStack.top();
         IterStack.pop();
-        std::cout << TNode->data << " ";
+        std::cout << TNode->data << "  ";
 
         if (TNode->right)
             IterStack.push(TNode->right);
@@ -356,7 +356,7 @@ void AVLTree<T>::widthTraversal(AVLNode<T>* tree) {
     while (!Queue.empty()) {
         AVLNode<T>* TNode = Queue.front(); // Первый элемент очереди
         Queue.pop(); // Удаление элемента из начала очереди
-        std::cout << TNode->data << " ";
+        std::cout << TNode->data << "  ";
 
         if (TNode->left != nullptr)
             Queue.push(TNode->left);

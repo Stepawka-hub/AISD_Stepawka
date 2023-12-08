@@ -12,7 +12,7 @@ int TApplication::Menu(int status) {
 	switch (status) {
 	case 1:
 		std::cout << "\n\x1B[93m << Главное меню >>\033[0m\n";
-		std::cout << "\n \x1B[96m<1> - Работа с двоичным деревом\n <2> - Работа с АВЛ деревом\033[0m\n";
+		std::cout << "\n \x1B[96m<1> - Работа с двоичным деревом\n <2> - Работа с АВЛ деревом\n <3> - Быстрая демонстрация\033[0m\n";
 		std::cout << "\x1B[91m <0> - Выход из программы\033[0m\n";
 		break;
 
@@ -50,6 +50,9 @@ int TApplication::Executor() {
 			break;
 		case 2:
 			AVLMenu();
+			break;
+		case 3:
+			Demo();
 			break;
 		default:
 			break;
@@ -147,7 +150,7 @@ int TApplication::AVLMenu() {
 
 		case 5:
 			system("cls");
-			std::cout << "\x1B[93m*Обход в ширину*\n";
+			std::cout << "\x1B[93m*Обход в ширину*\x1B[96m\n";
 			AVLTree.widthTraversal();
 			std::cout << "\n";
 			system("pause");
@@ -191,6 +194,53 @@ int TApplication::AVLMenu() {
 
 		Menu(3);
 	}
+
+	return 0;
+}
+
+int TApplication::Demo() {
+	std::ifstream input("parsing.txt");
+	std::string line;
+	system("cls");
+
+	if (input.is_open())
+		std::getline(input, line);
+	else
+		std::cout << "\x1B[93mФайл не удалось открыть!\n";
+
+	std::cout << "\x1B[96m1. *Парсинг бинарного дерева*\n";
+	BTree.Parsing(line);
+	std::cout << "\x1B[93mПарсинг успешно выполнен!\n\n";
+
+	std::cout << "\x1B[96m2. *Вывод бинарного дерева*\x1B[93m\n";
+	BTree.BypassInDepth(BTree.GetRoot());
+	std::cout << "\n";
+
+	std::cout << "\n\x1B[96m3. *Создание АВЛ дерева на основе бинарного*\x1B[93m\n";
+	AVLTree.create(BTree);
+	std::cout << "\x1B[93mАВЛ дерево успешно создано\n\n";
+
+	std::cout << "\x1B[96m4. *Обход в ширину*\x1B[93m\n";
+	AVLTree.widthTraversal();
+	std::cout << "\n\n";
+
+	std::cout << "\x1B[96m5. *Прямой обход*\x1B[93m\n";
+	AVLTree.orderCLR();
+	std::cout << "\n\n";
+
+	std::cout << "\x1B[96m6. *Центрированный обход*\x1B[93m\n";
+	AVLTree.orderLCR();
+	std::cout << "\n\n";
+
+	std::cout << "\x1B[96m7. *Обратный обход*\x1B[93m\n";
+	AVLTree.orderLRC();
+	std::cout << "\n\n";
+
+	std::cout << "\x1B[96m8. *Обход в глубину (Итеративный вариант)*\x1B[93m\n";
+	AVLTree.traversalIter();
+	std::cout << "\n\n";
+
+	system("pause");
 
 	return 0;
 }

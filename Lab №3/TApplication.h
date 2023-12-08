@@ -9,6 +9,7 @@ private:
 	int Menu(int);
 	int BinaryMenu();
 	int AVLMenu();
+	int Demo();
 
 public:
 	TApplication();

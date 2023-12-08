@@ -111,7 +111,7 @@ template <typename T>
 void BinaryTree<T>::BypassInDepth(Node<T>* TNode) {
     if (TNode) { // Узел существует
         BypassInDepth(TNode->left);
-        std::cout << TNode->data << " ";
+        std::cout << TNode->data << "  ";
         BypassInDepth(TNode->right);
     }
 }
