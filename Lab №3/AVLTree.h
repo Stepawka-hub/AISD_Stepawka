@@ -12,7 +12,6 @@ public:
     AVLNode(T);
 };
 
-
 template <typename T>
 class AVLTree {
 private:
@@ -22,7 +21,10 @@ private:
     int diffheight(AVLNode<T>*); // Разница в высотах между поддеревьями
     AVLNode<T>* balance(AVLNode<T>*); // Балансировка АВЛ дерева
     AVLNode<T>* insert(AVLNode<T>*, T); // Вставка элемента
-    AVLNode<T>* search(AVLNode<T>*, T); // Поиск элемента
+    AVLNode<T>* search(AVLNode<T>*, T); // Поиск узла по ключу
+    AVLNode<T>* remove(AVLNode<T>*, T); // Удаление узла по ключу
+    AVLNode<T>* get_minkey(AVLNode<T>*); // Поиск узла с мин. ключом относительно искомого
+    AVLNode<T>* remove_minkey(AVLNode<T>*); // Удаление узла из дерева с мин. ключом относительно искомого
 
     // Повороты
     AVLNode<T>* rr_rotation(AVLNode<T>*);
@@ -34,15 +36,19 @@ private:
     void orderCLR(AVLNode<T>*); // Прямой порядок
     void orderLCR(AVLNode<T>*); // Центрированный порядок
     void orderLRC(AVLNode<T>*); // Обратный порядок
+    void orderLRC(AVLNode<T>*); // Обратный порядок
+    void widthTraversal(AVLNode<T>*); // Обход в ширину
 
 public:
     AVLTree();
     void create(BinaryTree<T>);
     T insert(T);
     AVLNode<T>* search(T);
+    void remove(T);
     void orderCLR();
     void orderLCR();
     void orderLRC();
+    void widthTraversal();
 };
 
 template <typename T>
@@ -188,15 +194,8 @@ T AVLTree<T>::insert(T data) {
 // Поиск узла по ключу
 template <typename T>
 AVLNode<T>* AVLTree<T>::search(AVLNode<T>* TNode, T key) {
-    if (TNode == nullptr) {
-        std::cout << "\n\x1B[93mУзел с указанным ключом\x1B[91m не был найден!\n";
+    if (TNode == nullptr || TNode->data == key)
         return TNode;
-    }
-
-    else if (TNode->data == key) {
-        std::cout << "\n\x1B[93mУзел с указанным ключом\x1B[96m был найден!\n";
-        return TNode;
-    }
 
     if (key < TNode->data)
         return search(TNode->left, key);
@@ -206,7 +205,69 @@ AVLNode<T>* AVLTree<T>::search(AVLNode<T>* TNode, T key) {
 
 template <typename T>
 AVLNode<T>* AVLTree<T>::search(T key) {
-    return search(root, key);
+    AVLNode<T>* TNode = search(root, key);
+
+    if (TNode == nullptr)
+        std::cout << "\n\x1B[93mУзел с указанным ключом\x1B[91m не был найден!\n";
+    else if (TNode->data == key)
+        std::cout << "\n\x1B[93mУзел с указанным ключом\x1B[96m был найден!\n";
+
+    return TNode;
+}
+
+// Удаление узла по ключу
+template <typename T>
+AVLNode<T>* AVLTree<T>::remove(AVLNode<T>* TNode, T key) {
+    if (TNode == nullptr)
+        return 0;
+
+    if (key < TNode->data) // Ищем узел с указанным ключом
+        TNode->left = remove(TNode->left, key);
+
+    else if (key > TNode->data) // Ищем узел с указанным ключом
+        TNode->right = remove(TNode->right, key);
+
+    else { // Узел найден
+        AVLNode<T>* l_root = TNode->left;
+        AVLNode<T>* r_root = TNode->right;
+        delete TNode;
+
+        if (r_root == nullptr) // Если правое поддерево не пустое, то находим там узел с мин. ключом
+            return l_root;
+
+        AVLNode<T>* min = get_minkey(r_root);
+        min->right = remove_minkey(r_root);
+        min->left = l_root;
+
+        return balance(min);
+    }
+
+    return balance(TNode);
+}
+
+template <typename T>
+void AVLTree<T>::remove(T key) {
+    if (remove(root, key) == nullptr)
+        std::cout << "\n\x1B[93mУзел с указанным ключом\x1B[91m не был найден!\n";
+    else
+        std::cout << "\n\x1B[93mУзел с указанным ключом\x1B[96m был удалён!\n";
+}
+
+template <typename T>
+AVLNode<T>* AVLTree<T>::get_minkey(AVLNode<T>* TNode) {
+    if (TNode->left != nullptr)
+        return get_minkey(TNode->left);
+    else
+        return TNode;
+}
+
+template <typename T>
+AVLNode<T>* AVLTree<T>::remove_minkey(AVLNode<T>* TNode) {
+    if (TNode->left == 0)
+        return TNode->right;
+    TNode->left = remove_minkey(TNode->left);
+
+    return balance(TNode);
 }
 
 // Обход - Прямой порядок
@@ -254,4 +315,18 @@ void AVLTree<T>::orderLRC() {
     orderLRC(this->root);
 }
 
+// Обход в ширину
+template <typename T>
+void AVLTree<T>::widthTraversal(AVLNode<T>* tree) {
+    if (tree == nullptr)
+        return;
+    widthTraversal(tree->left);
+    widthTraversal(tree->right);
+    std::cout << tree->data << "  ";
+}
+
+template <typename T>
+void AVLTree<T>::widthTraversal() {
+    widthTraversal(this->root);
+}
 

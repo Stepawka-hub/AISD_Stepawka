@@ -139,7 +139,9 @@ int TApplication::AVLMenu() {
 
 		case 4:
 			system("cls");
-			std::cout << "\x1B[93m*Алгоритм удаления*\n";
+			std::cout << "\x1B[93mВведите ключ узла, который нужно удалить:\x1B[96m ";
+			std::cin >> data;
+			AVLTree.remove(data);
 			system("pause");
 			break;
 
