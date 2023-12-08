@@ -1,4 +1,5 @@
 #include <stack>
+#include <queue>
 #include <sstream>
 
 #pragma once
@@ -348,9 +349,21 @@ template <typename T>
 void AVLTree<T>::widthTraversal(AVLNode<T>* tree) {
     if (tree == nullptr)
         return;
-    widthTraversal(tree->left);
-    widthTraversal(tree->right);
-    std::cout << tree->data << "  ";
+
+    std::queue<AVLNode<T>*> Queue;
+    Queue.push(tree);
+
+    while (!Queue.empty()) {
+        AVLNode<T>* TNode = Queue.front(); // Первый элемент очереди
+        Queue.pop(); // Удаление элемента из начала очереди
+        std::cout << TNode->data << " ";
+
+        if (TNode->left != nullptr)
+            Queue.push(TNode->left);
+
+        if (TNode->right != nullptr)
+            Queue.push(TNode->right);
+    }
 }
 
 template <typename T>

@@ -148,6 +148,8 @@ int TApplication::AVLMenu() {
 		case 5:
 			system("cls");
 			std::cout << "\x1B[93m*Обход в ширину*\n";
+			AVLTree.widthTraversal();
+			std::cout << "\n";
 			system("pause");
 			break;
 
