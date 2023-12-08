@@ -244,7 +244,7 @@ AVLNode<T>* AVLTree<T>::remove(AVLNode<T>* TNode, T key) {
         return balance(min);
     }
 
-    return balance(TNode);
+    return balance(this->root);
 }
 
 template <typename T>
@@ -277,6 +277,7 @@ template <typename T>
 void AVLTree<T>::orderCLR(AVLNode<T>* tree) {
     if (tree == nullptr)
         return;
+
     std::cout << tree->data << "  ";
     orderCLR(tree->left);
     orderCLR(tree->right);
@@ -284,6 +285,10 @@ void AVLTree<T>::orderCLR(AVLNode<T>* tree) {
 
 template <typename T>
 void AVLTree<T>::orderCLR() {
+    if (this->root == nullptr) {
+        std::cout << "\x1B[91mÄåðåâî ïóñòîå!";
+        return;
+    }
     orderCLR(this->root);
 }
 
@@ -292,6 +297,7 @@ template <typename T>
 void AVLTree<T>::orderLCR(AVLNode<T>* tree) {
     if (tree == nullptr)
         return;
+
     orderLCR(tree->left);
     std::cout << tree->data << "  ";
     orderLCR(tree->right);
@@ -299,6 +305,10 @@ void AVLTree<T>::orderLCR(AVLNode<T>* tree) {
 
 template <typename T>
 void AVLTree<T>::orderLCR() {
+    if (this->root == nullptr) {
+        std::cout << "\x1B[91mÄåðåâî ïóñòîå!";
+        return;
+    }
     orderLCR(this->root);
 }
 
@@ -307,6 +317,7 @@ template <typename T>
 void AVLTree<T>::orderLRC(AVLNode<T>* tree) {
     if (tree == nullptr)
         return;
+
     orderLRC(tree->left);
     orderLRC(tree->right);
     std::cout << tree->data << "  ";
@@ -314,6 +325,10 @@ void AVLTree<T>::orderLRC(AVLNode<T>* tree) {
 
 template <typename T>
 void AVLTree<T>::orderLRC() {
+    if (this->root == nullptr) {
+        std::cout << "\x1B[91mÄåðåâî ïóñòîå!";
+        return;
+    }
     orderLRC(this->root);
 }
 
@@ -341,6 +356,10 @@ void AVLTree<T>::traversalIter(AVLNode<T>* root) {
 
 template <typename T>
 void AVLTree<T>::traversalIter() {
+    if (this->root == nullptr) {
+        std::cout << "\x1B[91mÄåðåâî ïóñòîå!";
+        return;
+    }
     traversalIter(this->root);
 }
 
@@ -368,6 +387,10 @@ void AVLTree<T>::widthTraversal(AVLNode<T>* tree) {
 
 template <typename T>
 void AVLTree<T>::widthTraversal() {
+    if (this->root == nullptr) {
+        std::cout << "\x1B[91mÄåðåâî ïóñòîå!";
+        return;
+    }
     widthTraversal(this->root);
 }
 
