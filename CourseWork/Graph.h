@@ -26,6 +26,8 @@ public:
     void DFS(); // Обход в глубину
     void BFS(); // Обход в ширину
     void Kruskal(); // Алгоритм Краскала
+    void getAList();
+    int ** getIM();
 };
 
 std::ostream& operator<<(std::ostream&, Graph&);

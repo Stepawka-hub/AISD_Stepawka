@@ -184,6 +184,51 @@ void Graph::Kruskal() {
     delete[] edges;
 }
 
+void Graph::getAList() {
+
+    for (int i = 0; i < v; ++i) {
+        std::cout << " \x1B[93m" << vertices[i] << ": \x1B[96m";
+        bool first = true;
+        for (int j = 0; j < v; ++j) {
+            if (weight[i][j] > 0) {
+                if (!first)
+                    std::cout << ", ";
+                std::cout << "[" << vertices[j] << ", " << weight[i][j] << "]";
+                first = false;
+            }
+        }
+        std::cout << "\n";
+    }
+}
+
+int** Graph::getIM() {
+    int numEdges = v * (v - 1) / 2; // Макс. кол-во рёбер
+    int** incidenceMatrix = new int* [v];
+
+    for (int i = 0; i < v; ++i)
+        incidenceMatrix[i] = new int[numEdges](); // Инициализируем нулями
+
+    int edge = 0;
+    for (int i = 0; i < v; ++i) { // Обходим только верхний треугольник матрицы
+        for (int j = i + 1; j < v; ++j) {
+            if (weight[i][j] > 0) {
+                incidenceMatrix[i][edge] = 1;
+                incidenceMatrix[j][edge] = 1;
+                edge++;
+            }
+        }
+    }
+
+    for (int i = 0; i < v; ++i) {
+        for (int j = 0; j < edge; ++j) {
+            std::cout << std::setw(4) << incidenceMatrix[i][j];
+        }
+        std::cout << "\n";
+    }
+
+    return incidenceMatrix;
+}
+
 std::ostream& operator<<(std::ostream& os, Graph& graph) {
     int** tempweight = graph.getweight();
     char* tempvertices = graph.getvertices();
