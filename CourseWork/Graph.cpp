@@ -212,8 +212,8 @@ int** Graph::getIM() {
     for (int i = 0; i < v; ++i) { // Обходим только верхний треугольник матрицы
         for (int j = i + 1; j < v; ++j) {
             if (weight[i][j] > 0) {
-                incidenceMatrix[i][edge] = 1;
-                incidenceMatrix[j][edge] = 1;
+                incidenceMatrix[i][edge] = weight[i][j];
+                incidenceMatrix[j][edge] = weight[i][j];
                 edge++;
             }
         }
