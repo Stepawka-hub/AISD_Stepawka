@@ -220,6 +220,7 @@ int** Graph::getIM() {
     }
 
     for (int i = 0; i < v; ++i) {
+        std::cout << "\x1B[93m" << std::setw(4) << vertices[i] << "\x1B[96m";
         for (int j = 0; j < edge; ++j) {
             std::cout << std::setw(4) << incidenceMatrix[i][j];
         }
